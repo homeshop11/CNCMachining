@@ -324,7 +324,7 @@ PUBLIC_URL=http://PUBLIC_IP/cms
 cd /opt/cncmachining-cms
 sudo -u "$APP_USER" npm install
 sudo -u "$APP_USER" npm run build
-sudo -u "$APP_USER" env NODE_ENV=production npm start
+sudo -u "$APP_USER" env NODE_ENV=development npm run develop
 ```
 
 确认服务在 `127.0.0.1:1337` 可访问后，停止手动进程。
@@ -344,14 +344,21 @@ User=deploy
 Group=deploy
 WorkingDirectory=/opt/cncmachining-cms
 EnvironmentFile=/opt/cncmachining-cms/.env
-Environment=NODE_ENV=production
-ExecStart=/usr/bin/npm start
+Environment=NODE_ENV=development
+ExecStart=/usr/bin/npm run develop
 Restart=always
 RestartSec=5
 TimeoutStopSec=20
 
 [Install]
 WantedBy=multi-user.target
+```
+
+测试环境使用 `npm run develop`，以便在后台编辑 Content Type。内容类型稳定、准备正式发布前，再把 Strapi 服务切回：
+
+```ini
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/npm start
 ```
 
 启用服务：
