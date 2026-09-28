@@ -29,6 +29,8 @@ Lancoprecision 精密制造工厂官网的前端与项目配置仓库。
 - 项目 Skill：[.codex/skills/cncmachining-web/SKILL.md](./.codex/skills/cncmachining-web/SKILL.md)
 - 部署指南：[docs/deployment.md](./docs/deployment.md)
 - Ubuntu 公网测试环境部署：[docs/deployment-ubuntu-test.md](./docs/deployment-ubuntu-test.md)
+- 前端接入 Strapi：[docs/strapi-integration.md](./docs/strapi-integration.md)
+- Strapi 后台使用说明：[docs/strapi-admin-guide.md](./docs/strapi-admin-guide.md)
 
 ## 目录结构
 
