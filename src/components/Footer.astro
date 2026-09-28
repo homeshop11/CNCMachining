@@ -1,0 +1,71 @@
+---
+import { ExternalLink, FileText, Mail, MapPin, MessageCircle, Phone } from '@lucide/astro';
+import { company, productLines } from '../data/site';
+---
+
+<footer class="border-t border-slate-200 bg-slate-950 text-slate-300">
+  <div class="page-shell grid gap-10 py-14 lg:grid-cols-[1.4fr_1fr_1fr]">
+    <div>
+      <div class="flex items-center gap-2 text-white">
+        <span class="flex h-9 w-9 items-center justify-center rounded-md bg-brand-500 text-white">
+          <span class="text-sm font-bold">LP</span>
+        </span>
+        <span class="text-base font-semibold">{company.name}</span>
+      </div>
+      <p class="mt-5 max-w-md text-sm leading-6 text-slate-400">
+        Precision CNC machining, turning, milling, five-axis work, and sheet metal fabrication for demanding B2B programs.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="text-sm font-semibold text-white">Capabilities</h2>
+      <ul class="mt-4 space-y-3">
+        {
+          productLines.map((product) => (
+            <li>
+              <a href={`/products/${product.slug}`} class="text-sm text-slate-400 transition-colors hover:text-white">
+                {product.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-sm font-semibold text-white">Contact</h2>
+      <div class="mt-4 space-y-3 text-sm">
+        <a href={`mailto:${company.email}`} class="flex items-start gap-3 text-slate-400 hover:text-white">
+          <Mail size={17} class="mt-0.5 shrink-0" aria-hidden="true" />
+          {company.email}
+        </a>
+        <a href={`tel:${company.phone.replace(/\s/g, '')}`} class="flex items-start gap-3 text-slate-400 hover:text-white">
+          <Phone size={17} class="mt-0.5 shrink-0" aria-hidden="true" />
+          {company.phone}
+        </a>
+        <a href={`https://wa.me/${company.whatsapp}`} target="_blank" rel="noreferrer" class="flex items-start gap-3 text-slate-400 hover:text-white">
+          <MessageCircle size={17} class="mt-0.5 shrink-0" aria-hidden="true" />
+          WhatsApp
+        </a>
+        <a href={company.linkedin} target="_blank" rel="noreferrer" class="flex items-start gap-3 text-slate-400 hover:text-white">
+          <ExternalLink size={17} class="mt-0.5 shrink-0" aria-hidden="true" />
+          LinkedIn
+        </a>
+        <p class="flex items-start gap-3 text-slate-400">
+          <MapPin size={17} class="mt-0.5 shrink-0" aria-hidden="true" />
+          {company.address}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="page-shell flex flex-col gap-3 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+      <p>© 2026 {company.legalName}</p>
+      <a href="/privacy" class="inline-flex items-center gap-2 hover:text-white">
+        <FileText size={14} aria-hidden="true" />
+        Privacy policy
+      </a>
+    </div>
+  </div>
+</footer>

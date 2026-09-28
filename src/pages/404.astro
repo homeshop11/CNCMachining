@@ -1,0 +1,26 @@
+---
+import { ArrowLeft } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found | Lancoprecision"
+  description="The requested page could not be found."
+  currentPath="/404"
+>
+  <section class="section-pad">
+    <div class="page-shell flex min-h-[52svh] items-center justify-center text-center">
+      <div class="max-w-xl">
+        <p class="text-7xl font-semibold text-brand-700">404</p>
+        <h1 class="mt-5 text-3xl font-semibold text-slate-950">Page not found</h1>
+        <p class="mt-4 text-base leading-7 text-slate-600">
+          The requested page does not exist or may have moved.
+        </p>
+        <a href="/" class="btn-primary mt-8">
+          <ArrowLeft size={17} aria-hidden="true" />
+          Return home
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

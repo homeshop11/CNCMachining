@@ -1,0 +1,6 @@
+interface:
+  display_name: "CNC Machining Web"
+  short_description: "Build and maintain the Lancoprecision manufacturing website."
+  default_prompt: "Use $cncmachining-web to implement or review a Lancoprecision website task."
+policy:
+  allow_implicit_invocation: true

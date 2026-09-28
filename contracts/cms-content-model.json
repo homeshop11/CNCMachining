@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lancoprecision.local/contracts/cms-content-model.json",
+  "title": "Lancoprecision CMS Content Contract",
+  "description": "Machine-readable contract for Strapi content types consumed by the Lancoprecision website.",
+  "type": "object",
+  "required": [
+    "productLines",
+    "equipment",
+    "certifications",
+    "caseStudies",
+    "companyInfo",
+    "pages"
+  ],
+  "properties": {
+    "productLines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/productLine"
+      }
+    },
+    "equipment": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/equipment"
+      }
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/certification"
+      }
+    },
+    "caseStudies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/caseStudy"
+      }
+    },
+    "companyInfo": {
+      "$ref": "#/$defs/companyInfo"
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/page"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "localizedString": {
+      "type": "object",
+      "required": [
+        "en"
+      ],
+      "properties": {
+        "en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "de": {
+          "type": "string"
+        },
+        "ru": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mediaItem": {
+      "type": "object",
+      "required": [
+        "url",
+        "alt"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mimeType": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "keyValueItem": {
+      "type": "object",
+      "required": [
+        "key",
+        "value"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "productLine": {
+      "type": "object",
+      "required": [
+        "slug",
+        "name",
+        "summary",
+        "description",
+        "materials",
+        "specifications",
+        "images",
+        "sortOrder",
+        "status"
+      ],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "name": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "summary": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "description": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "materials": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "specifications": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/keyValueItem"
+          }
+        },
+        "tolerances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/keyValueItem"
+          }
+        },
+        "surfaceTreatments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "applications": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "leadTime": {
+          "type": "string"
+        },
+        "images": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/mediaItem"
+          }
+        },
+        "equipment": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sortOrder": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "published"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "equipment": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "model",
+        "quantity",
+        "capability",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capability": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "$ref": "#/$defs/mediaItem"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        },
+        "productLines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "certification": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "issuer",
+        "document",
+        "sortOrder"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date"
+        },
+        "validUntil": {
+          "type": "string",
+          "format": "date"
+        },
+        "document": {
+          "$ref": "#/$defs/mediaItem"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "caseStudy": {
+      "type": "object",
+      "required": [
+        "id",
+        "industry",
+        "title",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "industry": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image": {
+          "$ref": "#/$defs/mediaItem"
+        },
+        "productLines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "companyInfo": {
+      "type": "object",
+      "required": [
+        "companyName",
+        "address",
+        "phone",
+        "email",
+        "whatsapp",
+        "privacyPolicyUrl"
+      ],
+      "properties": {
+        "companyName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "whatsapp": {
+          "type": "string",
+          "minLength": 1
+        },
+        "linkedin": {
+          "type": "string",
+          "format": "uri"
+        },
+        "privacyPolicyUrl": {
+          "type": "string",
+          "format": "uri-reference"
+        }
+      },
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "required": [
+        "slug",
+        "title",
+        "status"
+      ],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "title": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "metaTitle": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "metaDescription": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "localizedContent": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "published"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

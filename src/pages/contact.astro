@@ -1,0 +1,74 @@
+---
+import { Clock3, ExternalLink, Mail, MapPin, MessageCircle, Phone } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import { company } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact | Lancoprecision"
+  description="Contact Lancoprecision by email, phone, WhatsApp, LinkedIn, or the inquiry form."
+  currentPath="/contact"
+>
+  <section class="bg-slate-950 py-20 text-white sm:py-24">
+    <div class="page-shell max-w-3xl">
+      <p class="eyebrow text-amber-400">Contact</p>
+      <h1 class="mt-5 text-4xl font-semibold leading-tight text-white sm:text-6xl">
+        Start a technical inquiry.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
+        Send drawings, quantities, material requirements, and target dates. A production review can begin without a long discovery call.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <div>
+        <p class="eyebrow">Direct channels</p>
+        <h2 class="section-title">Contact methods</h2>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          <a href={`mailto:${company.email}`} class="rounded-lg border border-slate-200 bg-white p-5 transition-colors hover:border-brand-600">
+            <Mail size={22} class="text-brand-700" aria-hidden="true" />
+            <h3 class="mt-5 text-base font-semibold text-slate-950">Email</h3>
+            <p class="mt-1 break-all text-sm text-slate-600">{company.email}</p>
+          </a>
+          <a href={`tel:${company.phone.replace(/\s/g, '')}`} class="rounded-lg border border-slate-200 bg-white p-5 transition-colors hover:border-brand-600">
+            <Phone size={22} class="text-brand-700" aria-hidden="true" />
+            <h3 class="mt-5 text-base font-semibold text-slate-950">Phone</h3>
+            <p class="mt-1 text-sm text-slate-600">{company.phone}</p>
+          </a>
+          <a href={`https://wa.me/${company.whatsapp}`} target="_blank" rel="noreferrer" class="rounded-lg border border-slate-200 bg-white p-5 transition-colors hover:border-brand-600">
+            <MessageCircle size={22} class="text-brand-700" aria-hidden="true" />
+            <h3 class="mt-5 text-base font-semibold text-slate-950">WhatsApp</h3>
+            <p class="mt-1 text-sm text-slate-600">Quick project discussion</p>
+          </a>
+          <a href={company.linkedin} target="_blank" rel="noreferrer" class="rounded-lg border border-slate-200 bg-white p-5 transition-colors hover:border-brand-600">
+            <ExternalLink size={22} class="text-brand-700" aria-hidden="true" />
+            <h3 class="mt-5 text-base font-semibold text-slate-950">LinkedIn</h3>
+            <p class="mt-1 text-sm text-slate-600">Company page</p>
+          </a>
+        </div>
+
+        <div class="mt-8 rounded-lg border border-slate-200 bg-slate-50 p-5">
+          <div class="flex items-start gap-3">
+            <MapPin size={20} class="mt-0.5 shrink-0 text-brand-700" aria-hidden="true" />
+            <div>
+              <h3 class="text-base font-semibold text-slate-950">Factory address</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-600">{company.address}</p>
+            </div>
+          </div>
+          <div class="mt-5 flex items-start gap-3">
+            <Clock3 size={20} class="mt-0.5 shrink-0 text-brand-700" aria-hidden="true" />
+            <div>
+              <h3 class="text-base font-semibold text-slate-950">Working hours</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-600">{company.hours}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <InquiryForm />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,133 @@
+---
+import { ArrowRight, CircleCheck, Factory, ShieldCheck } from '@lucide/astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { certifications, company, equipment, qualitySteps } from '../data/site';
+---
+
+<BaseLayout
+  title="About | Lancoprecision"
+  description="Factory capability, quality controls, equipment, and certifications behind Lancoprecision manufacturing."
+  currentPath="/about"
+>
+  <section class="relative isolate overflow-hidden bg-slate-950 py-20 sm:py-24">
+    <img
+      src="/images/factory-floor.jpg"
+      alt="Lancoprecision factory floor"
+      class="absolute inset-0 h-full w-full object-cover opacity-40"
+      loading="eager"
+      decoding="async"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/75 to-slate-950/35"></div>
+    <div class="page-shell relative z-10 max-w-3xl">
+      <p class="eyebrow text-amber-400">About Lancoprecision</p>
+      <h1 class="mt-5 text-4xl font-semibold leading-tight text-white sm:text-6xl">
+        A production floor built around repeatable precision.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
+        Lancoprecision supports prototype, bridge, and volume manufacturing with documented quality controls and direct engineering communication.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell grid gap-12 lg:grid-cols-[1fr_0.8fr]">
+      <div>
+        <p class="eyebrow">Factory capability</p>
+        <h2 class="section-title">Equipment and capacity</h2>
+        <p class="section-copy">
+          The following equipment list provides a representative view of core machining, fabrication, and inspection assets.
+        </p>
+
+        <div class="mt-8 overflow-hidden rounded-lg border border-slate-200 bg-white">
+          <div class="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold uppercase text-slate-500">
+            <span>Equipment</span>
+            <span>Model</span>
+            <span class="text-right">Qty</span>
+          </div>
+          <div class="divide-y divide-slate-100">
+            {
+              equipment.map((item) => (
+                <div class="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-4 text-sm">
+                  <span class="font-medium text-slate-900">{item.name}</span>
+                  <span class="text-slate-500">{item.model}</span>
+                  <span class="text-right font-semibold text-brand-700">{item.quantity}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="eyebrow">Quality system</p>
+        <h2 class="section-title">Process control</h2>
+        <div class="mt-8 space-y-6">
+          {
+            qualitySteps.map((step, index) => (
+              <div class="flex gap-4">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-brand-50 text-sm font-semibold text-brand-700">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+                <div>
+                  <h3 class="text-base font-semibold text-slate-950">{step.title}</h3>
+                  <p class="mt-2 text-sm leading-6 text-slate-600">{step.description}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-slate-200 bg-slate-50 section-pad">
+    <div class="page-shell">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <SectionHeading
+          eyebrow="Certifications"
+          title="Documented quality and compliance."
+          copy="Certification records support supplier qualification and engineering review."
+        />
+        <ShieldCheck size={48} class="hidden text-brand-700 lg:block" aria-hidden="true" />
+      </div>
+
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          certifications.map((cert) => (
+            <div class="rounded-lg border border-slate-200 bg-white p-5">
+              <CircleCheck size={22} class="text-brand-600" aria-hidden="true" />
+              <h3 class="mt-5 text-lg font-semibold text-slate-950">{cert.name}</h3>
+              <p class="mt-1 text-sm text-slate-500">{cert.issuer}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <div class="max-w-xl">
+        <p class="eyebrow">Operations</p>
+        <h2 class="section-title">A practical point of contact for engineering and purchasing.</h2>
+        <p class="section-copy">
+          Send technical requirements, drawings, and quantities for a structured review. This local build records the request without sending a live email.
+        </p>
+        <div class="mt-8 flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-5">
+          <Factory size={20} class="mt-0.5 shrink-0 text-brand-700" aria-hidden="true" />
+          <div>
+            <p class="text-sm font-semibold text-slate-950">{company.name}</p>
+            <p class="mt-1 text-sm leading-6 text-slate-500">{company.address}</p>
+          </div>
+        </div>
+        <a href="/contact" class="btn-primary mt-6">
+          View contact options
+          <ArrowRight size={17} aria-hidden="true" />
+        </a>
+      </div>
+      <InquiryForm compact />
+    </div>
+  </section>
+</BaseLayout>

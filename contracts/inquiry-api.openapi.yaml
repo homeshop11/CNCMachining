@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Lancoprecision Inquiry API
+  version: 1.0.0
+  description: Cloudflare Pages Function contract for receiving manufacturing inquiries.
+servers:
+  - url: https://lancoprecision.local
+    description: Production placeholder
+paths:
+  /api/inquiry:
+    post:
+      operationId: submitInquiry
+      summary: Submit a manufacturing inquiry
+      description: Validates an inquiry, sends it by email, writes a backup record, and returns a normalized response.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryRequest"
+      responses:
+        "200":
+          description: Inquiry accepted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InquiryResponse"
+        "400":
+          description: Validation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "413":
+          description: Payload or attachment too large.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server-side processing failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    InquiryRequest:
+      type: object
+      required:
+        - name
+        - email
+        - company
+        - message
+        - consent
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        company:
+          type: string
+          minLength: 2
+          maxLength: 160
+        country:
+          type: string
+          maxLength: 80
+        productLine:
+          type: string
+          enum:
+            - cnc-machining
+            - cnc-turning
+            - cnc-milling
+            - 5-axis-machining
+            - sheet-metal
+        message:
+          type: string
+          minLength: 10
+          maxLength: 5000
+        consent:
+          type: boolean
+          enum:
+            - true
+        turnstileToken:
+          type: string
+          description: Optional Cloudflare Turnstile response token.
+        attachments:
+          type: array
+          maxItems: 5
+          items:
+            type: object
+            required:
+              - name
+              - size
+              - mimeType
+              - url
+            properties:
+              name:
+                type: string
+                maxLength: 255
+              size:
+                type: integer
+                minimum: 1
+                maximum: 10485760
+              mimeType:
+                type: string
+                enum:
+                  - application/pdf
+                  - image/jpeg
+                  - image/png
+                  - image/webp
+                  - application/vnd.ms-excel
+                  - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                  - application/zip
+              url:
+                type: string
+                format: uri-reference
+      additionalProperties: false
+    InquiryResponse:
+      type: object
+      required:
+        - status
+        - id
+      properties:
+        status:
+          type: string
+          enum:
+            - accepted
+        id:
+          type: string
+          format: uuid
+        receivedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: string
+          enum:
+            - error
+        code:
+          type: string
+          enum:
+            - validation_failed
+            - payload_too_large
+            - rate_limited
+            - processing_failed
+        message:
+          type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: string
+      additionalProperties: false

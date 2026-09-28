@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { company } from '../data/site';
+---
+
+<BaseLayout
+  title="Privacy Policy | Lancoprecision"
+  description="Privacy policy for the Lancoprecision manufacturing website."
+  currentPath="/privacy"
+>
+  <section class="section-pad">
+    <div class="page-shell max-w-3xl">
+      <p class="eyebrow">Legal</p>
+      <h1 class="mt-5 text-4xl font-semibold leading-tight text-slate-950">Privacy Policy</h1>
+      <p class="mt-4 text-base text-slate-500">Last updated: 2026-09-28</p>
+
+      <div class="prose prose-slate mt-10 max-w-none text-slate-700">
+        <h2>1. Data We Process</h2>
+        <p>
+          When you submit an inquiry, we process the information you provide, including your name, work email, company, country, project requirements, and any drawings or specifications you attach.
+        </p>
+
+        <h2>2. Purpose</h2>
+        <p>
+          The information is used to review manufacturing requirements, prepare a technical or commercial response, and communicate with you about the inquiry.
+        </p>
+
+        <h2>3. Sharing</h2>
+        <p>
+          We share inquiry data only with employees or service providers who need it to process your request. We do not sell personal data.
+        </p>
+
+        <h2>4. Retention</h2>
+        <p>
+          Inquiry data is retained for as long as needed to complete the request and for reasonable business records, unless a longer retention period is required by law.
+        </p>
+
+        <h2>5. Your Rights</h2>
+        <p>
+          Depending on your location, you may request access, correction, or deletion of your personal data. Contact {company.email} with privacy-related requests.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

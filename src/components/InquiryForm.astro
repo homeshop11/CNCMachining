@@ -1,0 +1,224 @@
+---
+import { CircleCheck, FileUp, LoaderCircle, Send } from '@lucide/astro';
+import { productLines } from '../data/site';
+
+interface Props {
+  defaultProduct?: string;
+  compact?: boolean;
+}
+
+const { defaultProduct = '', compact = false } = Astro.props;
+---
+
+<div class:list={['border border-slate-200 bg-white shadow-panel', compact ? 'rounded-lg p-5' : 'rounded-lg p-5 sm:p-7']}>
+  <form id="inquiry-form" novalidate>
+    <div class="hidden" aria-hidden="true">
+      <label>
+        Website
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+
+    <div class:list={['grid gap-5', compact ? 'sm:grid-cols-2' : 'sm:grid-cols-2']}>
+      <div>
+        <label for="inquiry-name" class="field-label">Full name</label>
+        <input id="inquiry-name" name="name" class="field" type="text" autocomplete="name" required maxlength="120" />
+        <p class="mt-1 hidden text-xs text-red-600" data-error-for="name">Enter your full name.</p>
+      </div>
+
+      <div>
+        <label for="inquiry-email" class="field-label">Work email</label>
+        <input id="inquiry-email" name="email" class="field" type="email" autocomplete="email" required maxlength="254" />
+        <p class="mt-1 hidden text-xs text-red-600" data-error-for="email">Enter a valid work email.</p>
+      </div>
+
+      <div>
+        <label for="inquiry-company" class="field-label">Company</label>
+        <input id="inquiry-company" name="company" class="field" type="text" autocomplete="organization" required maxlength="160" />
+        <p class="mt-1 hidden text-xs text-red-600" data-error-for="company">Enter your company name.</p>
+      </div>
+
+      <div>
+        <label for="inquiry-country" class="field-label">Country or region</label>
+        <input id="inquiry-country" name="country" class="field" type="text" autocomplete="country-name" maxlength="80" />
+      </div>
+
+      <div class="sm:col-span-2">
+        <label for="inquiry-product" class="field-label">Product line</label>
+        <select id="inquiry-product" name="productLine" class="field">
+          <option value="" disabled>Select a capability</option>
+          {
+            productLines.map((product) => (
+              <option value={product.slug} selected={product.slug === defaultProduct}>
+                {product.name}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+
+      <div class="sm:col-span-2">
+        <label for="inquiry-message" class="field-label">Project requirements</label>
+        <textarea id="inquiry-message" name="message" class="field min-h-32 resize-y" required minlength="10" maxlength="5000" placeholder="Materials, quantities, tolerances, finish, and target date"></textarea>
+        <p class="mt-1 hidden text-xs text-red-600" data-error-for="message">Describe your requirement in at least 10 characters.</p>
+      </div>
+
+      <div class="sm:col-span-2">
+        <label for="inquiry-files" class="field-label">Drawings or specifications</label>
+        <div class="relative">
+          <input
+            id="inquiry-files"
+            name="files"
+            class="field cursor-pointer pr-24 file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-brand-50 file:px-3 file:py-1 file:text-sm file:font-medium file:text-brand-700"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.webp,.xls,.xlsx,.zip"
+            multiple
+          />
+          <FileUp size={18} class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+        </div>
+        <p class="mt-1 text-xs text-slate-500">PDF, image, spreadsheet, or ZIP. Up to 10 MB per file, 5 files maximum.</p>
+        <p class="mt-1 hidden text-xs text-red-600" data-error-for="files">One or more files exceed the allowed size or type.</p>
+      </div>
+
+      <label class="flex items-start gap-3 sm:col-span-2">
+        <input id="inquiry-consent" name="consent" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-500" required />
+        <span class="text-sm leading-6 text-slate-600">I agree to the processing of this inquiry and the attached files for quotation purposes.</span>
+      </label>
+      <p class="hidden text-xs text-red-600 sm:col-span-2" data-error-for="consent">Consent is required to submit this inquiry.</p>
+    </div>
+
+    <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <button id="inquiry-submit" type="submit" class="btn-primary min-w-40">
+        <Send id="inquiry-send-icon" size={17} aria-hidden="true" />
+        <LoaderCircle id="inquiry-loading-icon" class="hidden animate-spin" size={17} aria-hidden="true" />
+        <span id="inquiry-button-text">Send inquiry</span>
+      </button>
+      <p class="text-xs text-slate-500">Local development endpoint. No live email is sent.</p>
+    </div>
+
+    <div id="inquiry-error" class="mt-4 hidden rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert"></div>
+
+    <div id="inquiry-success" class="mt-4 hidden rounded-md border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm text-emerald-800" role="status" tabindex="-1">
+      <div class="flex items-start gap-3">
+        <CircleCheck size={20} class="mt-0.5 shrink-0" aria-hidden="true" />
+        <div>
+          <p class="font-semibold">Inquiry received</p>
+          <p class="mt-1 leading-6">Your request has been recorded locally. A production build would route this to email and backup storage.</p>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('inquiry-form') as HTMLFormElement | null;
+  const submit = document.getElementById('inquiry-submit') as HTMLButtonElement | null;
+  const sendIcon = document.getElementById('inquiry-send-icon');
+  const loadingIcon = document.getElementById('inquiry-loading-icon');
+  const buttonText = document.getElementById('inquiry-button-text');
+  const errorBox = document.getElementById('inquiry-error');
+  const successBox = document.getElementById('inquiry-success');
+
+  const allowedTypes = [
+    'application/pdf',
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/zip',
+  ];
+
+  function clearErrors() {
+    document.querySelectorAll<HTMLElement>('[data-error-for]').forEach((element) => {
+      element.classList.add('hidden');
+    });
+    errorBox?.classList.add('hidden');
+  }
+
+  function showFieldError(name: string) {
+    const field = document.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+    field?.classList.remove('hidden');
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    clearErrors();
+
+    if (!form || !submit) return;
+
+    const formData = new FormData(form);
+    const files = Array.from(formData.getAll('files') as File[]).filter((file) => file.size > 0);
+    const hasInvalidFile = files.some((file) => !allowedTypes.includes(file.type) || file.size > 10 * 1024 * 1024);
+
+    if (hasInvalidFile || files.length > 5) {
+      showFieldError('files');
+      return;
+    }
+
+    const consent = formData.get('consent') === 'on';
+    if (!consent) {
+      showFieldError('consent');
+      return;
+    }
+
+    if (!form.checkValidity()) {
+      const invalid = form.querySelector<HTMLElement>(':invalid');
+      const name = invalid?.getAttribute('name');
+      if (name) showFieldError(name);
+      invalid?.focus();
+      return;
+    }
+
+    submit.disabled = true;
+    sendIcon?.classList.add('hidden');
+    loadingIcon?.classList.remove('hidden');
+    if (buttonText) buttonText.textContent = 'Sending';
+
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      company: formData.get('company'),
+      country: formData.get('country'),
+      productLine: formData.get('productLine'),
+      message: formData.get('message'),
+      consent: true,
+      website: formData.get('website') ?? '',
+      attachments: files.map((file) => ({
+        name: file.name,
+        size: file.size,
+        mimeType: file.type,
+      })),
+    };
+
+    try {
+      const response = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Submission failed.');
+      }
+
+      form.reset();
+      successBox?.classList.remove('hidden');
+      successBox?.focus();
+    } catch (error) {
+      if (errorBox) {
+        errorBox.textContent = error instanceof Error ? error.message : 'Submission failed.';
+        errorBox.classList.remove('hidden');
+      }
+    } finally {
+      submit.disabled = false;
+      sendIcon?.classList.remove('hidden');
+      loadingIcon?.classList.add('hidden');
+      if (buttonText) buttonText.textContent = 'Send inquiry';
+    }
+  });
+</script>

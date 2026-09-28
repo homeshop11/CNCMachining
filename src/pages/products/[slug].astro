@@ -1,0 +1,170 @@
+---
+import { ArrowRight, Check, FileText, Ruler, Timer } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InquiryForm from '../../components/InquiryForm.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { productLines } from '../../data/site';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return productLines.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const relatedProducts = productLines.filter((item) => item.slug !== product.slug).slice(0, 3);
+---
+
+<BaseLayout
+  title={`${product.name} | Lancoprecision`}
+  description={product.summary}
+  currentPath={`/products/${product.slug}`}
+  image={product.image}
+>
+  <section class="relative isolate min-h-[64svh] overflow-hidden bg-slate-950">
+    <img
+      src={product.image}
+      alt={product.imageAlt}
+      class="absolute inset-0 h-full w-full object-cover opacity-60"
+      loading="eager"
+      decoding="async"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/70 to-slate-950/20"></div>
+    <div class="page-shell relative z-10 flex min-h-[64svh] items-center py-20">
+      <div class="max-w-3xl">
+        <nav class="text-sm text-slate-300" aria-label="Breadcrumb">
+          <a href="/" class="hover:text-white">Home</a>
+          <span class="px-2 text-slate-500">/</span>
+          <span class="text-white">{product.name}</span>
+        </nav>
+        <p class="eyebrow mt-8 text-amber-400">{product.shortName}</p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight text-white sm:text-6xl">{product.name}</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-200">{product.summary}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-slate-200 bg-white">
+    <div class="page-shell grid grid-cols-1 gap-px sm:grid-cols-3">
+      {
+        [
+          { icon: Ruler, label: 'Tolerance', value: product.tolerances[0] },
+          { icon: Timer, label: 'Lead time', value: product.leadTime },
+          { icon: FileText, label: 'Input files', value: 'STEP, IGES, X_T, DXF' },
+        ].map((item) => (
+          <div class="flex gap-4 px-1 py-7">
+            <item.icon size={22} class="mt-0.5 shrink-0 text-brand-700" aria-hidden="true" />
+            <div>
+              <p class="text-xs font-medium uppercase text-slate-500">{item.label}</p>
+              <p class="mt-1 text-base font-semibold text-slate-950">{item.value}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div class="min-w-0">
+        <p class="eyebrow">Overview</p>
+        <h2 class="section-title">Process capability</h2>
+        <p class="section-copy">{product.description}</p>
+
+        <div class="mt-10 grid gap-10 md:grid-cols-2">
+          <div>
+            <h3 class="text-xl font-semibold text-slate-950">Specifications</h3>
+            <dl class="mt-5 divide-y divide-slate-100 border-y border-slate-100">
+              {
+                product.specifications.map((spec) => (
+                  <div class="grid grid-cols-[130px_1fr] gap-4 py-4">
+                    <dt class="text-sm font-medium text-slate-500">{spec.label}</dt>
+                    <dd class="text-sm font-semibold text-slate-900">{spec.value}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-slate-950">Tolerances</h3>
+            <ul class="mt-5 space-y-3">
+              {
+                product.tolerances.map((tolerance) => (
+                  <li class="flex gap-3 text-sm leading-6 text-slate-700">
+                    <Check size={17} class="mt-1 shrink-0 text-brand-600" aria-hidden="true" />
+                    {tolerance}
+                  </li>
+                ))
+              }
+            </ul>
+
+            <h3 class="mt-8 text-xl font-semibold text-slate-950">Surface treatments</h3>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {
+                product.surfaceTreatments.map((treatment) => (
+                  <span class="rounded-full border border-slate-200 px-3 py-1 text-sm text-slate-600">{treatment}</span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-12 grid gap-10 md:grid-cols-2">
+          <div>
+            <h3 class="text-xl font-semibold text-slate-950">Materials</h3>
+            <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+              {
+                product.materials.map((material) => (
+                  <li class="flex items-center gap-3 rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700">
+                    <span class="h-2 w-2 rounded-full bg-brand-500"></span>
+                    {material}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-slate-950">Typical applications</h3>
+            <ul class="mt-5 space-y-3">
+              {
+                product.applications.map((application) => (
+                  <li class="flex gap-3 text-sm leading-6 text-slate-700">
+                    <ArrowRight size={17} class="mt-1 shrink-0 text-brand-600" aria-hidden="true" />
+                    {application}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <InquiryForm defaultProduct={product.slug} compact />
+      </aside>
+    </div>
+  </section>
+
+  <section class="border-t border-slate-200 bg-slate-50 section-pad">
+    <div class="page-shell">
+      <div class="flex items-end justify-between gap-6">
+        <div>
+          <p class="eyebrow">Related capabilities</p>
+          <h2 class="mt-3 text-2xl font-semibold text-slate-950 sm:text-3xl">Explore other processes</h2>
+        </div>
+      </div>
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        {
+          relatedProducts.map((item) => (
+            <ProductCard product={item} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
