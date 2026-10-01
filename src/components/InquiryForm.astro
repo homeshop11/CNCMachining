@@ -1,13 +1,14 @@
 ---
 import { CircleCheck, FileUp, LoaderCircle, Send } from '@lucide/astro';
-import { productLines } from '../data/site';
+import type { ProductLine } from '../lib/cms';
 
 interface Props {
   defaultProduct?: string;
   compact?: boolean;
+  productLines: ProductLine[];
 }
 
-const { defaultProduct = '', compact = false } = Astro.props;
+const { defaultProduct = '', compact = false, productLines } = Astro.props;
 ---
 
 <div class:list={['border border-slate-200 bg-white shadow-panel', compact ? 'rounded-lg p-5' : 'rounded-lg p-5 sm:p-7']}>

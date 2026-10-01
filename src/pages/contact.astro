@@ -2,7 +2,10 @@
 import { Clock3, ExternalLink, Mail, MapPin, MessageCircle, Phone } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import InquiryForm from '../components/InquiryForm.astro';
-import { company } from '../data/site';
+import { getCompany, getProductLines } from '../lib/cms';
+
+const company = await getCompany();
+const productLines = await getProductLines();
 ---
 
 <BaseLayout
@@ -68,7 +71,7 @@ import { company } from '../data/site';
         </div>
       </div>
 
-      <InquiryForm />
+      <InquiryForm productLines={productLines} />
     </div>
   </section>
 </BaseLayout>

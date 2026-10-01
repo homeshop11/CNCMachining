@@ -13,7 +13,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import InquiryForm from '../components/InquiryForm.astro';
 import ProductCard from '../components/ProductCard.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { advantages, certifications, equipment, productLines } from '../data/site';
+import { advantages } from '../data/site';
+import { getCertifications, getEquipment, getProductLines } from '../lib/cms';
+
+const productLines = await getProductLines();
+const equipment = await getEquipment();
+const certifications = await getCertifications();
 ---
 
 <BaseLayout
@@ -205,7 +210,7 @@ import { advantages, certifications, equipment, productLines } from '../data/sit
           Use the form to start a technical review. This local development build records the submission without sending a live email.
         </p>
       </div>
-      <InquiryForm compact />
+      <InquiryForm compact productLines={productLines} />
     </div>
   </section>
 </BaseLayout>

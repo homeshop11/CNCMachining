@@ -1,6 +1,13 @@
 ---
 import { ExternalLink, FileText, Mail, MapPin, MessageCircle, Phone } from '@lucide/astro';
-import { company, productLines } from '../data/site';
+import type { CompanyInfo, ProductLine } from '../lib/cms';
+
+interface Props {
+  company: CompanyInfo;
+  productLines: ProductLine[];
+}
+
+const { company, productLines } = Astro.props;
 ---
 
 <footer class="border-t border-slate-200 bg-slate-950 text-slate-300">

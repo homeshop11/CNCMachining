@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { company } from '../data/site';
+import { getCompany } from '../lib/cms';
+
+const company = await getCompany();
 ---
 
 <BaseLayout

@@ -1,8 +1,14 @@
 ---
 import { Factory, Menu, Phone, X } from '@lucide/astro';
-import { company, navigation } from '../data/site';
+import { navigation } from '../data/site';
+import type { CompanyInfo } from '../lib/cms';
 
-const { currentPath = '/' } = Astro.props;
+interface Props {
+  currentPath?: string;
+  company: CompanyInfo;
+}
+
+const { currentPath = '/', company } = Astro.props;
 ---
 
 <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">

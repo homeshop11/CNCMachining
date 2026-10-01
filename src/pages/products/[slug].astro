@@ -3,18 +3,23 @@ import { ArrowRight, Check, FileText, Ruler, Timer } from '@lucide/astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import InquiryForm from '../../components/InquiryForm.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { productLines } from '../../data/site';
+import { getProductLines } from '../../lib/cms';
+import type { ProductLine } from '../../lib/cms';
 
 export const prerender = true;
 
 export async function getStaticPaths() {
+  const productLines = await getProductLines();
   return productLines.map((product) => ({
     params: { slug: product.slug },
-    props: { product },
+    props: { product, productLines },
   }));
 }
 
-const { product } = Astro.props;
+const { product, productLines } = Astro.props as {
+  product: ProductLine;
+  productLines: ProductLine[];
+};
 const relatedProducts = productLines.filter((item) => item.slug !== product.slug).slice(0, 3);
 ---
 
@@ -145,7 +150,7 @@ const relatedProducts = productLines.filter((item) => item.slug !== product.slug
       </div>
 
       <aside class="lg:sticky lg:top-24 lg:self-start">
-        <InquiryForm defaultProduct={product.slug} compact />
+        <InquiryForm defaultProduct={product.slug} compact productLines={productLines} />
       </aside>
     </div>
   </section>

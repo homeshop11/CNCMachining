@@ -3,7 +3,13 @@ import { ArrowRight, CircleCheck, Factory, ShieldCheck } from '@lucide/astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import InquiryForm from '../components/InquiryForm.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import { certifications, company, equipment, qualitySteps } from '../data/site';
+import { qualitySteps } from '../data/site';
+import { getCertifications, getCompany, getEquipment, getProductLines } from '../lib/cms';
+
+const certifications = await getCertifications();
+const company = await getCompany();
+const equipment = await getEquipment();
+const productLines = await getProductLines();
 ---
 
 <BaseLayout
@@ -127,7 +133,7 @@ import { certifications, company, equipment, qualitySteps } from '../data/site';
           <ArrowRight size={17} aria-hidden="true" />
         </a>
       </div>
-      <InquiryForm compact />
+      <InquiryForm compact productLines={productLines} />
     </div>
   </section>
 </BaseLayout>
