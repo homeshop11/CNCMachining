@@ -4,8 +4,8 @@ info:
   version: 1.0.0
   description: Cloudflare Pages Function contract for receiving manufacturing inquiries.
 servers:
-  - url: https://lancoprecision.local
-    description: Production placeholder
+  - url: https://cncmachining.pages.dev
+    description: Cloudflare Pages production
 paths:
   /api/inquiry:
     post:
@@ -103,7 +103,6 @@ components:
               - name
               - size
               - mimeType
-              - url
             properties:
               name:
                 type: string

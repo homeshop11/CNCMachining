@@ -1,7 +1,7 @@
 import { chromium } from 'playwright-core';
 import { mkdir } from 'node:fs/promises';
 
-const baseUrl = 'http://127.0.0.1:4321';
+const baseUrl = process.env.BASE_URL ?? 'http://127.0.0.1:4321';
 const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 const pages = [

@@ -39,3 +39,5 @@ Thumbs.db
 # Browser test output
 test-results/
 .wrangler/
+
+key token.txt

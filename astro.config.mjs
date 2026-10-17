@@ -1,10 +1,8 @@
 import { defineConfig } from 'astro/config';
-import node from '@astrojs/node';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  output: 'static',
   integrations: [tailwind()],
-  site: 'http://localhost:4321',
+  site: 'https://cncmachining.pages.dev',
 });
