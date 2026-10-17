@@ -31,7 +31,7 @@ export const company = {
 
 export const navigation = [
   { label: 'Home', href: '/' },
-  { label: 'Capabilities', href: '/products/cnc-machining' },
+  { label: 'Capabilities', href: '/products/' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];

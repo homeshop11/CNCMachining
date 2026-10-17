@@ -1,0 +1,48 @@
+---
+import { ArrowRight } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getProductLines } from '../../lib/cms';
+
+const productLines = await getProductLines();
+---
+
+<BaseLayout
+  title="Capabilities | Lancoprecision"
+  description="Explore CNC machining, turning, milling, five-axis machining, and sheet metal capabilities."
+  currentPath="/products/"
+>
+  <section class="bg-slate-950 py-20 text-white sm:py-24">
+    <div class="page-shell max-w-3xl">
+      <p class="eyebrow text-amber-400">Capabilities</p>
+      <h1 class="mt-5 text-4xl font-semibold leading-tight text-white sm:text-6xl">
+        Manufacturing capabilities
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
+        Compare process options, materials, tolerances, and production support before starting an inquiry.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="page-shell">
+      <SectionHeading
+        eyebrow="Process lines"
+        title="Choose the capability that fits your part."
+        copy="Each process page includes technical details and a direct inquiry path."
+      />
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          productLines.map((product) => (
+            <ProductCard product={product} />
+          ))
+        }
+      </div>
+      <a href="/contact" class="btn-primary mt-10">
+        Discuss a project
+        <ArrowRight size={17} aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+</BaseLayout>
